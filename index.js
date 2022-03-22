@@ -16,7 +16,7 @@ Shopify.Context.initialize(
         API_KEY: SHOPIFY_API_KEY,
         API_SECRET_KEY: SHOPIFY_API_SECRET,
         SCOPES: [SHOPIFY_API_SCOPES],
-        HOST_NAME:"a031-2402-8100-263e-8151-c170-b6ab-8821-9acf.ngrok.io",
+        HOST_NAME:"a384-2402-8100-263e-8151-796c-565-f2be-f79e.ngrok.io",
         IS_EMBEDDED_APP: true,
     }
 )
@@ -46,9 +46,10 @@ app.get("/auth/callback", async (req, res) => {
         res,
         req.query
     );
-    console.log(shopSession);
-    shops[shopSession.shop] = shopSession;
-    console.log(shops);
+    const data = (await shopSession).shop;
+    const token = (await shopSession).accessToken;
+    res.send(token);
+    shops[data] = shopSession;
 })
 
 
