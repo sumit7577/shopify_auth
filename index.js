@@ -5,7 +5,7 @@ import { Shopify } from "@shopify/shopify-api";
 dotenv.config();
 
 const app = express();
-const port = process.env.port;
+const port = 3000;
 
 const { SHOPIFY_API_KEY, SHOPIFY_API_SECRET, SHOPIFY_API_SCOPES } = process.env;
 
@@ -15,13 +15,13 @@ Shopify.Context.initialize(
     {
         API_KEY: SHOPIFY_API_KEY,
         API_SECRET_KEY: SHOPIFY_API_SECRET,
-        SCOPES: SHOPIFY_API_SCOPES,
-        HOST_NAME:"localhost",
+        SCOPES: [SHOPIFY_API_SCOPES],
+        HOST_NAME:"a031-2402-8100-263e-8151-c170-b6ab-8821-9acf.ngrok.io",
         IS_EMBEDDED_APP: true,
     }
 )
 app.get('/', async (req, res) => {
-    if (typeof shops[req.query.shop] == "undefined") {
+    if (typeof shops[req.query.shop] !== "undefined") {
         res.send("hllo world");
     }
     else {
@@ -37,7 +37,6 @@ app.get("/auth", async (req, res) => {
         '/auth/callback',
         false,
     )
-    console.log(res,authRoute);
     res.redirect(authRoute);
 });
 
@@ -47,8 +46,9 @@ app.get("/auth/callback", async (req, res) => {
         res,
         req.query
     );
-    res.send(shopSession);
+    console.log(shopSession);
     shops[shopSession.shop] = shopSession;
+    console.log(shops);
 })
 
 
